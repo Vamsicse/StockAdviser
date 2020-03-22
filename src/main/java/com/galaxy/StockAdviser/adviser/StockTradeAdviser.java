@@ -122,7 +122,7 @@ public class StockTradeAdviser {
         System.out.print("Total-Invest: $" + (int) totalInvest + getTS(3));
         System.out.print("Total-Current-Value: $" + (int) totalValue + getTS(3));
         if (totalValue - totalInvest > 0) {
-            System.out.println("PROFIT: $" + ((int)totalValue - (int)totalInvest));
+            System.out.println("GAIN: $" + ((int)totalValue - (int)totalInvest));
         } else {
             System.out.println("LOSS: $" + ((int)totalInvest - (int)totalValue));
         }
