@@ -3,8 +3,11 @@ com/galaxy/StockAdviser/adviser/StockTradeAdviser.class
 com/galaxy/StockAdviser/StockAdviserApplication.class
 com/galaxy/StockAdviser/model/StockPurchase.class
 com/galaxy/StockAdviser/constants/MessageConstants$2.class
+com/galaxy/StockAdviser/adviser/StockDividendAnalyzer.class
+com/galaxy/StockAdviser/constants/PrintConstants.class
 com/galaxy/StockAdviser/constants/MessageConstants$1.class
 com/galaxy/StockAdviser/converter/UnmarshallHelper.class
+com/galaxy/StockAdviser/util/StockUtil.class
 com/galaxy/StockAdviser/util/IOUtil.class
 com/galaxy/StockAdviser/gateway/StockAccessor.class
 com/galaxy/StockAdviser/constants/MessageConstants$4.class

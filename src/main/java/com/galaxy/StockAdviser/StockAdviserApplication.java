@@ -1,5 +1,6 @@
 package com.galaxy.StockAdviser;
 
+import com.galaxy.StockAdviser.adviser.StockDividendAnalyzer;
 import com.galaxy.StockAdviser.adviser.StockTradeAdviser;
 import com.galaxy.StockAdviser.constants.MessageConstants;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +23,13 @@ public class StockAdviserApplication {
 			System.out.println(MessageConstants.ERROR + "Please pass your stock investments file path as argument.");
 			System.exit(1);
 		}
+		if(args.length>1 && "HYS".equals(args[1])) {
+			StockDividendAnalyzer.populateHighYieldStocks();
+		}
 		StockTradeAdviser.suggestStockTrading(args[0]);
+		if(args.length>1 && "HYS".equals(args[1])) {
+			StockDividendAnalyzer.printStockDividendAnalysis();
+		}
 	}
 
 }

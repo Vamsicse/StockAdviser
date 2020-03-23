@@ -13,7 +13,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StockPurchase {
 
-    String date, cp;
+    private String date, cp;
 
     public StockPurchase(){}
 

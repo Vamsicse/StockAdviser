@@ -16,20 +16,14 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StockSellAdviser {
 
-    String name;
-    List<StockPurchase> stockPurchases = new ArrayList<>();
-    double currentStockValue;
-    double profit;
-    String result;
+    private String name;
+    private List<StockPurchase> stockPurchases = new ArrayList<>();
 
     public StockSellAdviser(){}
 
-    public StockSellAdviser(String name, List<StockPurchase> stockPurchases, double currentStockValue, double profit, String result){
+    public StockSellAdviser(String name, List<StockPurchase> stockPurchases){
         this.name = name;
         this.stockPurchases = stockPurchases;
-        this.currentStockValue = currentStockValue;
-        this.profit = profit;
-        this.result = result;
     }
 
 }
