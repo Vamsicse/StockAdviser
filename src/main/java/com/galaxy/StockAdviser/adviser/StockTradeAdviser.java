@@ -1,17 +1,15 @@
 package com.galaxy.StockAdviser.adviser;
 
+import com.galaxy.StockAdviser.constants.MessageConstants;
 import com.galaxy.StockAdviser.constants.PrintConstants;
-import com.galaxy.StockAdviser.converter.UnmarshallHelper;
-import com.galaxy.StockAdviser.gateway.StockAccessor;
+import com.galaxy.StockAdviser.constants.StockConstants;
+import com.galaxy.StockAdviser.model.MyStockPurchase;
 import com.galaxy.StockAdviser.model.StockPurchase;
-import com.galaxy.StockAdviser.model.StockSellAdviser;
-import com.galaxy.StockAdviser.util.IOUtil;
+import com.galaxy.StockAdviser.util.PrintUtil;
+import com.galaxy.StockAdviser.util.StockUtil;
 import org.apache.commons.lang3.StringUtils;
 import yahoofinance.Stock;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,49 +24,37 @@ import static com.galaxy.StockAdviser.constants.PrintConstants.printDashLine;
  */
 public class StockTradeAdviser {
 
-    private static Map<String, Stock> stockData = new HashMap<>();
-    private static List<StockSellAdviser> myStocks = new ArrayList<>();
-    private static Map<String, List<StockPurchase>> stockPurchases = new HashMap<>();
+    private static Map<String, Stock> allStockDataMap = StockUtil.getAllStocks();
+    private static Map<String, List<StockPurchase>> myStockPurchasesMap = new HashMap<>();
 
-    public static void suggestStockTrading(String stocksFilePath) {
-        String stocksData = IOUtil.getFileContent(stocksFilePath);
-        myStocks = UnmarshallHelper.unMarshalltoStockSellAdviser(stocksData);
-        populateStocksMap();
-        PrintConstants.getLS();
-        printSuggestions();
-    }
-
-    public static Map<String, List<StockPurchase>> getMyStocks(){
-        return stockPurchases;
-    }
-
-    private static void populateStocksMap() {
-        for (StockSellAdviser stockSellAdviser : myStocks) {
-            String currentStockName = stockSellAdviser.getName();
-            Stock currentStock = StockAccessor.getStock(currentStockName);
-            stockData.put(currentStockName, currentStock);
-            stockPurchases.put(stockSellAdviser.getName(), stockSellAdviser.getStockPurchases());
+    public static Map<String, List<StockPurchase>> getMyStocksList(){
+        if(myStockPurchasesMap.size()<1){
+            throw new RuntimeException(MessageConstants.ERROR + "Stock Purchases Map not yet initialized");
         }
+        return myStockPurchasesMap;
     }
 
-    private static void printSuggestions() {
+    public static void printSuggestions(List<MyStockPurchase> myStocksList) {
+        for(MyStockPurchase myStockPurchase : myStocksList){
+            myStockPurchasesMap.put(myStockPurchase.getName(), myStockPurchase.getStockPurchases());
+        }
+        PrintConstants.getLS();
         printDashLine();
-        System.out.println("Stock" + getTS(1) + "Bought" + getTS(2) + "CostPrice" + getTS(1)
-                + "Now" + getTS(1) + "Diff" + getTS(1) + "P/L" + getTS(1)
+        System.out.println("Stock" + getTS(1) + "Bought" + getTS(2) + "$CP" + getTS(2)
+                + "Now" + getTS(2) + "Diff" + getTS(1) + "G/L" + getTS(1)
                 + "DayOpen" + getTS(1) + "PrevClose" + getTS(1)
-                + "DayLow" + getTS(1) + "DayHigh" + getTS(1)
-                + "PriceAvg50" + getTS(1) + "PriceAvg200" + getTS(1)
+                + "DayLow" + getTS(1) + "DayHigh" + getTS(2)
                 + "YearLow" + getTS(1) + "YearHigh" + getTS(1)
+                + "$Avg50" + getTS(3) + "$Avg200" + getTS(2)
                 + "Pay-Date" + getTS(1) + "AnnualYield" + getTS(1) + "AnnualYield%" );
-
         printDashLine();
         double totalInvest = 0, totalValue = 0;
-        for (StockSellAdviser stockSellAdviser : myStocks) {
-            String currStockName = stockSellAdviser.getName();
-            double currStockVal = stockData.get(currStockName).getQuote().getPrice().doubleValue();
+        for (MyStockPurchase myStockPurchase : myStocksList) {
+            String currStockName = myStockPurchase.getName();
+            double currStockVal = allStockDataMap.get(currStockName).getQuote().getPrice().doubleValue();
             String paddedCurrStockName = StringUtils.rightPad(currStockName,4);
             System.out.print(paddedCurrStockName + getTS(1));                                  // StockName
-            List<StockPurchase> stockPurchaseList = stockSellAdviser.getStockPurchases();
+            List<StockPurchase> stockPurchaseList = myStockPurchase.getStockPurchases();
             boolean flag = false;
             for (StockPurchase currStockPurchase : stockPurchaseList) {
                 if (flag) {
@@ -78,55 +64,20 @@ public class StockTradeAdviser {
                 totalInvest += cp;
                 System.out.print(currStockPurchase.getDate() + getTS(1));                       // Bought
                 System.out.print("$");
-                System.out.format("%.2f",cp);
-                System.out.print(getTS(2));                                                     // CostPrice
+                System.out.format("%.2f",cp);                                                      // CostPrice
+                System.out.print(getTS(2));
                 System.out.print("$");
-                System.out.format("%.2f",currStockVal);
-                System.out.print(getTS(1));                                                     // Now
+                System.out.format("%.2f",currStockVal);                                             // Now
+                System.out.print(getTS(2));
                 totalValue += currStockVal;
                 double result = currStockVal - cp;
-                System.out.print((int) result + getTS(1));                                       // Diff
-                String stat = (result < 0.1) ? "LOSS" : "PROFIT";
+                System.out.format("%.2f",Math.abs(result));                                                   // Diff
+                System.out.print(getTS(1));
+                String stat = (result < 0.01) ? "LOSS" : "GAIN";
                 System.out.print(stat);                                                              // Profit/Loss
 
-                System.out.print(getTS(1));
-                System.out.format("%.2f", stockData.get(currStockName).getQuote().getOpen());              // Open
-                System.out.print(getTS(1));
-                System.out.format("%.2f", stockData.get(currStockName).getQuote().getPreviousClose()); // Previous-Close
+                PrintUtil.printMetaData(currStockName, flag, StockConstants.TRADE_ADVISER);
 
-                System.out.print(getTS(2));
-                System.out.format("%.2f", stockData.get(currStockName).getQuote().getDayLow());  // Day-Low
-                System.out.print(getTS(1));
-                System.out.format("%.2f", stockData.get(currStockName).getQuote().getDayHigh()); // Day-High
-
-                System.out.print(getTS(1));
-                System.out.format("%.2f", stockData.get(currStockName).getQuote().getPriceAvg50());  // Avg-50
-                System.out.print(getTS(2));
-                System.out.format("%.2f", stockData.get(currStockName).getQuote().getPriceAvg200()); // Avg-200
-
-                System.out.print(getTS(2));
-                System.out.format("%.2f", stockData.get(currStockName).getQuote().getYearLow());  // Year-Low
-                System.out.print(getTS(1));
-                System.out.format("%.2f", stockData.get(currStockName).getQuote().getYearHigh()); // Year-High
-                if (!flag) {
-                    double annualYield = 0;
-                    double annualYieldPercent = 0;
-                    Calendar calendar = null;
-                    SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-                    boolean perk = true;
-                    try {
-                        calendar = stockData.get(currStockName).getDividend().getPayDate();
-                        annualYield = stockData.get(currStockName).getDividend().getAnnualYield().doubleValue();
-                        annualYieldPercent = stockData.get(currStockName).getDividend().getAnnualYieldPercent().doubleValue();
-                    } catch (Exception e) {
-                        perk = false;
-                    }
-                    if (perk) {
-                        System.out.print(getTS(2) + format1.format(calendar.getTime()));                                // Pay-Date
-                        System.out.print(getTS(1)); System.out.format("%.2f", annualYield);                             // Annual-Yield
-                        System.out.print(getTS(2)); System.out.format("%.2f", annualYieldPercent);                      // Annual-Yield-%
-                    }
-                }
                 System.out.println();
                 flag = true;
             } // Exit Inner Loop
