@@ -17,3 +17,4 @@ com/galaxy/StockAdviser/constants/MessageConstants$3.class
 com/galaxy/StockAdviser/constants/StockConstants.class
 com/galaxy/StockAdviser/env/EnvironmentSettings.class
 com/galaxy/StockAdviser/model/MyStockPurchase.class
+com/galaxy/StockAdviser/adviser/StockBuyAdviser.class

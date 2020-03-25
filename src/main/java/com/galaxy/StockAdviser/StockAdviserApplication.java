@@ -1,5 +1,6 @@
 package com.galaxy.StockAdviser;
 
+import com.galaxy.StockAdviser.adviser.StockBuyAdviser;
 import com.galaxy.StockAdviser.adviser.StockDividendAnalyzer;
 import com.galaxy.StockAdviser.adviser.StockTradeAdviser;
 import com.galaxy.StockAdviser.constants.MessageConstants;
@@ -38,6 +39,9 @@ public class StockAdviserApplication {
 		StockTradeAdviser.printSuggestions(myStocksList);
 		if(args.length>1 && "HYS".equals(args[1])) {
 			StockDividendAnalyzer.printStockDividendAnalysis();
+		}
+		if(args.length>2 && "RDS".equals(args[2])) {
+			StockBuyAdviser.printRanDownStocks(StockUtil.getAllStocks());
 		}
 	}
 

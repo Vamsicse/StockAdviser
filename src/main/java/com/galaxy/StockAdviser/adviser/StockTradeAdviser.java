@@ -40,7 +40,7 @@ public class StockTradeAdviser {
         }
         PrintConstants.getLS();
         printDashLine();
-        System.out.println("Stock" + getTS(1) + "Bought" + getTS(2) + "$CP" + getTS(2)
+        System.out.println("Stock" + getTS(1) + "Bought" + getTS(2) + "CP" + getTS(2)
                 + "Now" + getTS(2) + "Diff" + getTS(1) + "G/L" + getTS(1)
                 + "DayOpen" + getTS(1) + "PrevClose" + getTS(1)
                 + "DayLow" + getTS(1) + "DayHigh" + getTS(2)
@@ -81,7 +81,6 @@ public class StockTradeAdviser {
                 System.out.println();
                 flag = true;
             } // Exit Inner Loop
-            System.out.println();
         } // Exit Outer Loop
         printDashLine();
         System.out.print("Total-Invest: $" + (int) totalInvest + getTS(3));

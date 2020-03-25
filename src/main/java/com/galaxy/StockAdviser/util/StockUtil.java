@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
 public class StockUtil {
 
     private static Map<String, Double> highYieldStocks = new HashMap<>();
-    private static Map<String, Stock> allStocks = new HashMap<>();
+    private static Map<String, Stock> allStocks = new LinkedHashMap<>();
 
-    private static List<String> stockCodes = new ArrayList<>(Arrays.asList("ABBV", "ADC", "AIZ", "ALX", "ARE", "BA", "BAC", "BFS", "BKH", "BLK", "BMY", "BAC", "BXP", "BXP",
-            "CCI", "CMCSA", "CVS", "D", "DAL", "DGRO", "DIS", "DOW", "DRI", "DUK", "EBF", "ENB", "EOG", "ETN", "EXC", "FE", "FRT", "GILD", "GIS", "GLPI",
+    private static List<String> stockCodes = new ArrayList<>(Arrays.asList("AAPL","ABBV","ADC","AIZ","ALX","ARE", "BA", "BAC", "BFS", "BKH", "BLK", "BMY", "BAC", "BXP", "BXP",
+            "CCI", "CMCSA", "CVS", "D", "DAL", "DGRO", "DIS", "DOW", "DRI", "DUK", "EBF", "ENB", "EOG", "ETN", "EXC", "FE", "FRT", "GILD", "GIS", "GLPI","ILMN",
             "HDV", "HON", "IBM", "IRM", "JNJ", "KTB", "KO", "LOW", "MAA", "MCD", "MCHP", "MDLZ", "MDP", "MDT", "MGM", "MNR", "MPW", "MSFT", "MRK",
-            "NHI", "NNN", "NNN", "NRG", "NWE", "O", "OHI", "OKE", "OTEX", "PFE", "PLD", "PPL", "PSA", "PXD", "QCOM", "REG",
-            "SKT", "SLG", "SO", "SPG", "STOR", "SWM", "SWX", "T", "TSN", "UAL", "UHT", "UTX", "UVV", "VNQ","VOO", "VPU", "VYM", "VZ", "WELL", "WHG", "WIX", "XOM"));
+            "NHI", "NNN", "NNN", "NRG", "NWE", "O", "OHI", "OKE","ORCL","OTEX", "PFE", "PLD", "PPL", "PSA", "PXD", "PYPL","QCOM", "REG",
+            "SKT", "SLG", "SO", "SPG", "STOR", "SWM", "SWX", "T", "TSN", "UAL", "UHT", "UTX", "UVV", "VNQ","VOO", "VPU", "VYM", "VZ", "WELL","WHG","WIX","WMT","XOM"));
 
     public static void initiateAllStocks(List<String> myStockCodesList) {
         System.out.println(MessageConstants.INFO + "Initiating All Stocks Data. Please wait...");

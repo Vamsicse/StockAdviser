@@ -12,3 +12,4 @@
 /Users/vkmyalapal/IdeaProjects/StockAdviser/src/main/java/com/galaxy/StockAdviser/gateway/StockAccessor.java
 /Users/vkmyalapal/IdeaProjects/StockAdviser/src/main/java/com/galaxy/StockAdviser/util/IOUtil.java
 /Users/vkmyalapal/IdeaProjects/StockAdviser/src/main/java/com/galaxy/StockAdviser/model/MyStockPurchase.java
+/Users/vkmyalapal/IdeaProjects/StockAdviser/src/main/java/com/galaxy/StockAdviser/adviser/StockBuyAdviser.java
