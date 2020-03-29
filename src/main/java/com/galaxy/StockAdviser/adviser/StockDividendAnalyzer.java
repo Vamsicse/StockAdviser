@@ -26,22 +26,22 @@ public class StockDividendAnalyzer {
 
     public static void printStockDividendAnalysis() {
         Map<String, Double> highYieldStocks = StockUtil.getHighYieldStocks();
-        Map<String, List<StockPurchase>> myStocks = StockTradeAdviser.getMyStocksList();
+        Map<String, List<StockPurchase>> myStocks = StockTradeAnalyzer.getMyStocksList();
         Map<String, Stock> allStocks = StockUtil.getAllStocks();
 
         PrintConstants.getLS();
         PrintConstants.printDashLine();
         System.out.println("High Yield Stocks");
         PrintConstants.printDashLine();
-
-        System.out.println("Stock" + getTS(1) + "Share#" + getTS(1)
+        String rowHeader = "Stock" + getTS(1) + "Share#" + getTS(1)
                 + "Now" + getTS(1) + "DayOpen" + getTS(1) + "PrevClose" + getTS(5)
                 + "DayLow" + getTS(1) + "DayHigh" + getTS(2)
                 + "YearLow" + getTS(1) + "YearHigh" + getTS(1)
                 + "$Avg50" + getTS(3) + "$Avg200" + getTS(2)
-                + "Pay-Date" + getTS(1) + "AnnualYield" + getTS(1) + "AnnualYield%" );
+                + "Pay-Date" + getTS(1) + "AnnualYield" + getTS(1) + "AnnualYield%";
+        System.out.println(rowHeader);
         PrintConstants.printDashLine();
-
+        int line=1;
         for (String currStock : highYieldStocks.keySet()) {
             double currStockVal = 0;
             try{
@@ -69,6 +69,11 @@ public class StockDividendAnalyzer {
 
             PrintUtil.printMetaData(currStock, false, StockConstants.DIVIDEND_ANALYZER);
             System.out.println();
+            if(line++%50==0){
+                PrintConstants.printDashLine();
+                System.out.println(rowHeader);
+                PrintConstants.printDashLine();
+            }
         }
         PrintConstants.printDashLine();
         PrintConstants.getLS();
